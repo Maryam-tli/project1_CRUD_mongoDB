@@ -9,3 +9,25 @@ db = Client["person"]
 persons = db["persons"]
 
 screen = Tk()
+
+Id = StringVar()
+Name = StringVar()
+Age = StringVar()
+Section = StringVar()
+
+def add_person():
+    # dictionary از اطلاعات وارد شده
+    person = {
+        "Id": Id.get(),
+        "Full Name": Name.get(),
+        "Age": Age.get(),
+        "Section": Section.get()
+    }
+
+    # اضافه کردن شخص به جدولadd tbl
+    tbl.insert("", "end", values=(
+        person["Id"], person["Full Name"], person["Age"], person["Section"]))
+
+    # اضافه کردن شخص به پایگاه داده MongoDB
+    persons.insert_one(person)
+
