@@ -70,3 +70,36 @@ def delete_person():
             Age.set("")
             Section.set("")
 
+
+#اضافه کردن تابع به‌روزرسانی  update
+def update_person():
+    # آیتم انتخاب شده از جدول
+    selected_item = tbl.focus()
+
+    if selected_item:
+        # دریافت مقادیر از آیتم انتخاب شده
+        values = tbl.item(selected_item, 'values')
+
+        if values:
+            # به‌روزرسانی جدول با مقادیر جدید
+            tbl.item(selected_item, values=(
+                Id.get(), Name.get(), Age.get(), Section.get()))
+
+            # به‌روزرسانی رکورد در MongoDB با استفاده از "Id"
+            persons.update_one(
+                {"Id": values[0]},  # شرط جستجو برای پیدا کردن رکورد قدیمی
+                {
+                    "$set": {
+                        "Id": Id.get(),
+                        "Full Name": Name.get(),
+                        "Age": Age.get(),
+                        "Section": Section.get()
+                    }
+                }
+            )
+
+            # پاک کردن فیلدهای ورودی بعد از به‌روزرسانی
+            Id.set("")
+            Name.set("")
+            Age.set("")
+            Section.set("")
