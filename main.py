@@ -103,3 +103,28 @@ def update_person():
             Name.set("")
             Age.set("")
             Section.set("")
+
+
+#search برای جستجو کارکتر به کارکتر در همه المان ها
+def search_person():
+    # ابتدا همه رکوردهای جدول را حذف می‌کنیم تا نتایج جستجو نمایش داده شود
+    for item in tbl.get_children():
+        tbl.delete(item)
+
+    # مقدار وارد شده توسط کاربر برای جستجو
+    search_query = Name.get()  # فرض می‌کنیم کاربر در فیلد Name جستجو را وارد می‌کند
+
+    # جستجو در تمام فیلدها
+    results = persons.find({
+        "$or": [
+            {"Id": {"$regex": search_query, "$options": "i"}},
+            {"Full Name": {"$regex": search_query, "$options": "i"}},
+            {"Age": {"$regex": search_query, "$options": "i"}},
+            {"Section": {"$regex": search_query, "$options": "i"}}
+        ]
+    })
+
+    # نمایش نتایج جستجو در جدول
+    for person in results:
+        tbl.insert("", "end", values=(
+            person["Id"], person["Full Name"], person["Age"], person["Section"]))
