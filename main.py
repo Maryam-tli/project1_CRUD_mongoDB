@@ -31,3 +31,9 @@ def add_person():
     # اضافه کردن شخص به پایگاه داده MongoDB
     persons.insert_one(person)
 
+# read MongoDB و نمایش در جدول هنگام راه‌اندازی برنامه
+def load_data():
+    for person in persons.find():
+        tbl.insert("", "end", values=(
+        person["Id"], person["Full Name"], person["Age"], person["Section"]))
+
