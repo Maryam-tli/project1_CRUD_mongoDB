@@ -37,3 +37,36 @@ def load_data():
         tbl.insert("", "end", values=(
         person["Id"], person["Full Name"], person["Age"], person["Section"]))
 
+# get selection
+def set_to_entries(event):
+    selected_item = tbl.focus()  # آیتم انتخاب شده
+    if selected_item:
+        values = tbl.item(selected_item, 'values')
+        if values:
+            Id.set(values[1])
+            Name.set(values[2])
+            Age.set(values[3])
+            Section.set(values[4])
+
+# تابع برای حذف سطر انتخابی و پاک کردن ورودی‌ها delete
+def delete_person():
+    # آیتم انتخاب شده از جدول
+    selected_item = tbl.focus()
+
+    if selected_item:
+        # دریافت مقادیر از آیتم انتخاب شده
+        values = tbl.item(selected_item, 'values')
+
+        if values:
+            # حذف از جدول
+            tbl.delete(selected_item)
+
+            # حذف از پایگاه داده MongoDB با استفاده از "Id"
+            persons.delete_one({"Id": values[0]})
+
+            # پاک کردن فیلدهای ورودی
+            Id.set("")
+            Name.set("")
+            Age.set("")
+            Section.set("")
+
